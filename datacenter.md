@@ -112,3 +112,9 @@ There are multiple technologies to maintain the temperature in datacenter.
 <https://www.raritan.com/ap/blog/detail/types-of-data-center-cooling-techniques>
 
 <https://www.vxchnge.com/blog/data-center-cooling-technology>
+
+## E.Datacenter.8: CenturyLink data center outages
+
+In January,2019 CenturyLink cloud communications network  had outages across US and blocked access to 911 emergency services. 
+This was caused by a faulty network management card in a data center.
+
