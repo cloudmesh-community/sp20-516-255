@@ -115,6 +115,5 @@ There are multiple technologies to maintain the temperature in datacenter.
 
 ## E.Datacenter.8: CenturyLink data center outages
 
-In January,2019 CenturyLink cloud communications network  had outages across US and blocked access to 911 emergency services. 
-This was caused by a faulty network management card in a data center.
+In Dec,2018 CenturyLink cloud communications network  had outages across US. The subscribers across US were blocked access to 911 emergency services. The outage also impacted voice, IP and transport services, and Company's ability to troubleshoot the issue. This was caused by a faulty network management card in a data center. The outage lasted for approximately 37 hours.
 
