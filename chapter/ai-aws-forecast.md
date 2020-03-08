@@ -13,7 +13,7 @@ AWS Forecast is a fully managed service that uses machine learning to combine ti
 
 ## High Level Architecture 
 
-![AWS Forecast High level Architecture](images/sp20-516-255-AWS_Forecast.PNG){#fig:sp20-516-255-AWS_Forecast}
+![](../images/sp20-516-255-AWS_Forecast.PNG){#fig:sp20-516-255-AWS_Forecast}
 
 ## References
 
