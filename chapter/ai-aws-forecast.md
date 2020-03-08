@@ -29,6 +29,22 @@ Amazon Forecast can be used to generate predictions on time-series data to predi
 
 * CUSTOM – All other types of time-series
 
+## Predefined Algorithms 
+
+Amazon Forecast provides the following predefined algorithms: 
+
+* Autoregressive Integrated Moving Average (ARIMA) Algorithm : arn:aws:forecast:::algorithm/ARIMA
+
+* DeepAR+ Algorithm : arn:aws:forecast:::algorithm/Deep_AR_Plus
+
+* Exponential Smoothing (ETS) : arn:aws:forecast:::algorithm/ETS
+
+* Non-Parametric Time Series (NPTS) : arn:aws:forecast:::algorithm/NPTS
+
+* Prophet Algorithm : arn:aws:forecast:::algorithm/Prophet
+
+* Supports hyperparameter optimization (HPO)
+
 ## How Amazon Forecast Works 
 
 ![](../images/sp20-516-255-AWS_Forecast.PNG){#fig:sp20-516-255-AWS_Forecast}
@@ -50,11 +66,21 @@ Forecast uses Amazon S3 to store the target time-series data used to train predi
 *  Step 3 - Create a Forecast
 *  Step 4 - Retrieve a Forecast
 
+## Forecast Service Limits 
 
-## Data Privacy 
+![](../images/CreateDataSetImportJob.PNG) {#fig:Create Dataset Limits}
 
-User's retain ownership of the data and only authorized employees from AWS have access to the data processed by Amazon Forecast. Technical and physical controls, including encryption at rest and in transit are in place to secure the data.
+![](../images/CreatePredictor.PNG) {#fig:Create Predictor Limits}
 
+![](../images/General_Resource_Limits.PNG) {#fig:General Resource Limits}
+
+## Data Security : 
+
+User's retain ownership of the data and only authorized employees from AWS have access to the data processed by Amazon Forecast. Data Security is a shared responsibility between AWS and Customer. 
+
+* Security of the cloud – AWS is responsible. 
+
+* Security in the cloud – Customer's responsibility 
 
 ##  [Pricing](https://aws.amazon.com/forecast/pricing/) : 
 
@@ -74,9 +100,23 @@ Data storage: Up to 10GB per month
 
 Training hours: Up to 10 hours per month
 
-## Comparasion with Similar Products 
+## Alternative Products 
 
+* Qubole.
 
+* ServiceNow Now Platform.
+
+* scikit-learn.
+
+* Microsoft Knowledge Exploration Service.
+
+* Google Cloud AutoML.
+
+* BigML.
+
+* Microsoft Recommendations API.
+
+* Machine-learning in Python.
 
 ## References
 
@@ -85,3 +125,4 @@ https://aws.amazon.com/forecast/features/
 https://docs.aws.amazon.com/forecast/latest/dg/howitworks-datasets-groups.html
 https://docs.aws.amazon.com/forecast/latest/dg/api-reference.html
 https://docs.aws.amazon.com/forecast/latest/dg/howitworks-predictor.html
+https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
