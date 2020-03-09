@@ -86,10 +86,40 @@ paths:
                 type: number
 
 """
-def get_server_endpoint(self, _type):
+   
+     def __init__(self,
+                 endpoint="getApi",
+                 cloud="AWS",
+                 version="1.0.0",
+                 code=0,
+                 status=0
+                 ):
 
+        print("Paramater Initialization Code Here")
+        
 def add_server_endpoint(self, _type) :
 
+    print("AWS CLoud API Registry Request")
+      
+    if cloud="AWS" :
+    table = boto3.resource('dynamodb',
+                           region_name='us-east-1').Table('Services')
+    table.put_item(
+           Item={
+                'name': api_parameters["service_name"],
+                'version': api_parameters["service_version"],
+                'endpoint_url': api_parameters["endpoint_url"],
+                'ttl': int(api_parameters["ttl"]),
+                'status': api_parameters["status"],
+            }
+        )
+
+  elif cloud="Azure" :
+    print ("Azure API Registry Requested")
+
+  else :
+      print ("Cloud not Supported")
+
+def get_server_endpoint(self, _type):
+
 def remove_server_endpoint(self, _type):
-
-
