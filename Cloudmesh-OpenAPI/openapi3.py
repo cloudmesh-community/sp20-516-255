@@ -200,11 +200,7 @@ class Openapi3Command(PluginCommand):
 
                 reg._list()
 
-            except FileNotFoundError:
-
-                Console.error("specification file not found")
-
-            except Exception as e:
+              except Exception as e:
                 print(e)
 
 
