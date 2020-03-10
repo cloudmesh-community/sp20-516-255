@@ -46,7 +46,7 @@ class Openapi3Command(PluginCommand):
               openapi3 register add
                               [--endpoint=URL]
                               [--version=VERSION]
-                              [--cloud=CLOUD]
+                              [--location=LOCATION]
                               [--code=CODE]
                               [--status=STATUS]
                               
