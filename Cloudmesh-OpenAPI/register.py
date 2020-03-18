@@ -6,6 +6,7 @@ import connexion
 from importlib import import_module
 import os
 
+
 class Register:
     openAPITemplate = """
 openapi: 3.0.0
