@@ -1,0 +1,7 @@
+{
+    "subscription_id": "bef87d91-25f6-475e-b78d-b0e74c90bc6b",
+    "resource_group": "aiml-aml",
+    "workspace_name": "aiml-ws",
+    "workspace_region":"East US 2",
+    "auth":"cli_auth"
+}
