@@ -1,0 +1,32 @@
+openapi: 3.0.2
+info:
+  title: Time Series Forecasting
+  description: AI servies to provide Time Series Forecasting in AWS and Azure using OpenAPI 3.0
+  license:
+    name: Apache 2.0
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:8080/cloudmesh
+
+paths:
+  /forecast:
+    get:
+      summary: Returns supported Time Series Forecasting functions of the hosting server
+      operationId: forecast.get_supported_times_series_services
+      responses:
+        '200':
+          description: AI Services info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/forecast"
+components:
+  schemas:
+    forecast:
+      type: "object"
+      required:
+        - "model"
+      properties:
+        model:
+          type: "string"
