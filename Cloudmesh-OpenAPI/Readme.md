@@ -34,7 +34,9 @@ resource planning and management.
 
 ## References
 https://swagger.io/specification/
+
 https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
+
 https://github.com/aws-samples/amazon-forecast-samples
 
 
