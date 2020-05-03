@@ -19,6 +19,7 @@ The project aims to provide an open API for timeseries forecasting.
 Develop in depth understanding of the 
 
 1. Open API 
-1. Cloudmesh
+1. Cloudmesh : Cloudmesh is a multicloud architecture providing capability to user to access multi-cloud environments such as AWS, Azure, Google, and OpenStack Clouds very easily. 
+   
 1. Available Time Series Forecasting services
 1. Python, YAML, JSON
