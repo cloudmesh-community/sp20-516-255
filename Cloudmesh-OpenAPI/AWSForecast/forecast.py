@@ -209,11 +209,11 @@ def generate_forecast(country='United Kingdom',recovered=True):
 
     return "Forecast generated successfully"
 
-def queryGeneratedForecast():
+def queryGeneratedForecast(countryName):
 
-    country='United Kingdom'
-    if hasattr(AIServObj, 'forcast_arn'):
-        forecastResponse=AIServObj.queryForecast(country)
+    AIServObj.forecast_arn = 'arn:aws:forecast:us-east-1:514439120157:forecast/timeseries1_deeparp_algo_forecast'
+    if hasattr(AIServObj, 'forecast_arn'):
+        forecastResponse=AIServObj.queryForecast(countryName)
     else:
         return "Execute create forecast first"
 
@@ -224,7 +224,7 @@ def compareResults():
     if hasattr(AIServObj, 'forecastResponse'):
         results=AIServObj.compareResults()
     else:
-        return "No Results to Compare"
+        return "No Results to Compare, generate a forecast query first"
     return "Comparasion Chart displayed"
 
 
