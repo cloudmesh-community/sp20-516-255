@@ -3,9 +3,9 @@ import connexion
 from flask_cors import CORS
 #from forecast import forecast
 # Create the application instance
+
 app = connexion.App(__name__, specification_dir="./")
 CORS(app.app)
-
 # Read the yaml file to configure the endpoints
 app.add_api("forecast.yaml")
 
