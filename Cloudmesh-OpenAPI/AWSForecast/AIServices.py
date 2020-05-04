@@ -191,12 +191,17 @@ class AIServices:
         return self.forecast_arn
 
     def queryForecast(self,countryname):
-        forecastResponse = self.forecastquery_srv.query_forecast(
-            ForecastArn=self.forecast_arn,
-            Filters={"Country": countryname}
-        )
+        import boto3
+        self.forecast_arn='arn:aws:forecast:us-east-1:514439120157:forecast/timeseries1_deeparp_algo_forecast'
+        session = boto3.Session(region_name='us-east-1')
+        forecastquery_srv= session.client(service_name='forecastquery')
 
+        forecastResponse = forecastquery_srv.query_forecast(
+            ForecastArn=self.forecast_arn,
+            Filters={"item_id": countryname}
+        )
         self.forecastResponse=forecastResponse
+        self.countryname=countryname
         return self.forecastResponse
 
     def compareResults(self):
@@ -205,39 +210,40 @@ class AIServices:
         import dateutil.parser
 
         #get actual test data
-        actual_df = pd.read_csv("aiservices-test.csv", names=['Date', 'Country', 'Confirmed', 'Recovered','Deaths'])
-        actual_df = actual_df[(actual_df['Date'] >= '2014-10-31') & (actual_df['Date'] < '2014-11-01')]
-        actual_df = actual_df[(actual_df['Country'] == 'United Kingdom')]
+        actual_df = pd.read_csv("aiservices-test.csv", names=['timestamp', 'item_id', 'Confirmed', 'target_value','Deaths'])
+        actual_df = actual_df[(actual_df['timestamp'] >= '2020-05-01') & (actual_df['timestamp'] < '2020-05-31')]
+        actual_df = actual_df[(actual_df['item_id'] == self.countryname)]
 
         #get predicted data
         self.pred_df_p10 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p10'])
         self.pred_df_p50 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p50'])
         self.pred_df_p90 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p90'])
 
+        print('all good till here')
         # create a results data frame to show compared data set
-        results_df = pd.DataFrame(columns=['Date', 'Recovered', 'source'])
+        results_df = pd.DataFrame(columns=['timestamp', 'target_value', 'source'])
 
         #insert actua data
         for index, row in actual_df.iterrows():
-            clean_timestamp = dateutil.parser.parse(row['Date'])
-            results_df = results_df.append({'timestamp': clean_timestamp, 'Recovered': row['Recovered'], 'source': 'actual'},
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'actual'},
                                            ignore_index=True)
 
         #insert predicted data
         for index, row in self.pred_df_p10.iterrows():
-            clean_timestamp = dateutil.parser.parse(row['Date'])
-            results_df = results_df.append({'timestamp': clean_timestamp, 'Recovered': row['Recovered'], 'source': 'p10'},
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p10'},
                                            ignore_index=True)
         for index, row in self.pred_df_p50.iterrows():
-            clean_timestamp = dateutil.parser.parse(row['Date'])
-            results_df = results_df.append({'timestamp': clean_timestamp, 'Recovered': row['Recovered'], 'source': 'p50'},
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p50'},
                                            ignore_index=True)
         for index, row in self.pred_df_p90.iterrows():
-            clean_timestamp = dateutil.parser.parse(row['Date'])
-            results_df = results_df.append({'timestamp': clean_timestamp, 'Recovered': row['Recovered'], 'source': 'p90'},
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p90'},
                                            ignore_index=True)
 
-        pivot_df = results_df.pivot(columns='source', values='Recovered', index="Date")
+        pivot_df = results_df.pivot(columns='source', values='target_value', index="timestamp")
         pivot_df.plot()
 
         return 'success'
