@@ -12,11 +12,7 @@ Develop Open API for time series forecasting on multiple clouds
 
 ## Introduction
 
-Many cloud providers have introduced machine learning capabilities on their infrastructure.
-The project aims to provide an open API for timeseries forecasting. 
-
-1. Amazon
-1. Azure 
+Many cloud providers have introduced machine learning capabilities on their infrastructure. The project aims to provide an open API for timeseries forecasting for AWS using Forecast Services and S3 
 
 ### AWS AI Service : Forecast Open API Service Features
 
