@@ -16,7 +16,6 @@ from cloudmesh.common.StopWatch import StopWatch
 
 
 AIServObj = AIServices('aws')
-print(AIServObj)
 
 def get_supported_times_series_services():
     """
@@ -49,7 +48,6 @@ def init_cloud_param(cloudname='None'):
         pinfo={"model":'No AI Service initialized successfully'}
     return jsonify(pinfo)
 
-
 def upload() -> str:
     """
     Uploads the provided data file to .cloudmesh/upload-file directory
@@ -58,17 +56,8 @@ def upload() -> str:
            filename
      """
     filename=FileOperation().file_upload()
-    return filename
-
-def uploadjson() -> str:
-    """
-    Uploads the provided data file to .cloudmesh/upload-file directory
-    :param name: file name
-    :return:
-           filename
-     """
-    filename=FileOperation().file_upload()
-    return filename
+    returnstr= filename + ' uploaded successfully'
+    return returnstr
 
 def updatedf(x,setval):
     """
@@ -101,11 +90,13 @@ def validate() -> str:
         file_path = os.path.join(path, filename)
         df = pd.read_csv(file_path)
         numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
-        #for c in [c for c in df.columns if df[c].dtype in numerics]:
-            #df[c] = df[c].apply(lambda x: updatedf(x, 0))
-        #df = df.apply(lambda x: updateNan(x))
-        AIServObj.df=df
-    return filename
+        for c in [c for c in df.columns if df[c].dtype in numerics]:
+            df[c] = df[c].apply(lambda x: updatedf(x, 0))
+
+        df = df.apply(lambda x: updateNan(x))
+        AIServObj.df = df
+        returnStr = filename + ' validated successfully'
+    return returnStr
 
 def split_train_test(data,percentage=0.3):
     """
@@ -141,7 +132,7 @@ def split_data_train_test(split_pct=0.3):
     return 'Data split successfully'
 
 
-def generate_forecast(country='United Kingdom',recovered=True):
+def generate_forecast(country='United Kingdom'):
     """
     Upload the training dataset to cloud storgae store(AWS= S3)
     Create a Dataset Group.
@@ -164,12 +155,7 @@ def generate_forecast(country='United Kingdom',recovered=True):
         StopWatch.start('to_s3')
         boto3.Session().resource('s3').Bucket(AIServObj.bucket_name).Object(AIServObj.key).upload_file("aiservices-train.csv")
         StopWatch.stop('to_s3')
-
         datasetGroupArn=AIServObj.createDatasetGroup()
-        #import json
-        #with open('C:\\Users\\prafu\\.cloudmesh\\upload-file\\schema.json') as f:
-        #  json_schema = json.load(f)
-        #AIServObj.schema=json_schema
 
         if hasattr(AIServObj, 'datasetGroupArn'):
             datasetArn=AIServObj.createDataset()
@@ -200,6 +186,7 @@ def generate_forecast(country='United Kingdom',recovered=True):
                 AIServObj.forecast_srv.delete_dataset_group(DatasetGroupArn=AIServObj.datasetGroupArn)
                 boto3.Session().resource('s3').Bucket(AIServObj.bucket_name).Object(AIServObj.key).delete()
                 return "Algorithm encountered an error while creating import Job"
+
         else:
             AIServObj.forecast_srv.delete_dataset_group(DatasetGroupArn=AIServObj.datasetGroupArn)
             boto3.Session().resource('s3').Bucket(AIServObj.bucket_name).Object(AIServObj.key).delete()
@@ -211,7 +198,6 @@ def generate_forecast(country='United Kingdom',recovered=True):
 
 def queryGeneratedForecast(countryName):
 
-    AIServObj.forecast_arn = 'arn:aws:forecast:us-east-1:514439120157:forecast/timeseries1_deeparp_algo_forecast'
     if hasattr(AIServObj, 'forecast_arn'):
         forecastResponse=AIServObj.queryForecast(countryName)
     else:
@@ -220,11 +206,13 @@ def queryGeneratedForecast(countryName):
     AIServObj.forecastResponse=forecastResponse
     return forecastResponse
 
+
 def compareResults():
     if hasattr(AIServObj, 'forecastResponse'):
         results=AIServObj.compareResults()
     else:
         return "No Results to Compare, generate a forecast query first"
     return "Comparasion Chart displayed"
+
 
 
