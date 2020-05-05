@@ -29,7 +29,13 @@ Many cloud providers have introduced machine learning capabilities on their infr
 * Generate Forecast
 * Query the Forecast
 
-### Environment Connfiguration
+### Additional Features
+
+* Multiple instance of the process supported 
+* Data Validation and missing values checks
+
+
+### Environment Configuration
 
 * Python 3.8.2 Python or newer.
 * Use a venv (see developer install)
@@ -45,6 +51,19 @@ Make sure you use a python venv before installing. Users can install the code wi
 ```bash
 $ pip install cloudmesh-openapi
 ```
+
+### Pre Requisites : 
+
+* Data Format : The data should be in csv file format and must have 
+  * item_id : reference column for which time series forecast is required
+  * target_value : the column which need to be predicted, data type integer
+  * timestamp : timestamp of data samples
+  
+  [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/API_CreateDataset.html)
+  
+* Json Schema : Json Schema file with name schema.json 
+
+  
 
 ### Quick Forecast API reference Commands
 * Start the open API server for the forecast service
