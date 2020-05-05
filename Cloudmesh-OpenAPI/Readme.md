@@ -57,6 +57,7 @@ cms openapi server start .//forecast.yaml
 curl http://localhost:8080/cloudmesh/forecast
 ```
 e.g. output: 
+
 {"model":"Supported Time Series Forecast Services AWS : Forecast Azure : Auto ML"} 
 
 * Upload file to the server from location 
@@ -64,6 +65,7 @@ e.g. output:
 curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
 ```
 e.g. output: 
+
 countries-aggregated.csv uploaded successfully
 
 * Validate data file 
@@ -71,11 +73,16 @@ countries-aggregated.csv uploaded successfully
 curl "http://localhost:8080/cloudmesh/forecast/validate_data" -F "upload=@<file_path>\countries-aggregated.csv"
 ```
 e.g. output: 
+
 countries-aggregated.csv validated successfully
 
 5. Initialize aws parameters 
+```bash
+curl "http://localhost:8080/cloudmesh/forecast/aws"
+```
+e.g. output: 
 
-curl -X GET "http://localhost:8080/cloudmesh/forecast/aws" -H "accept: application/json"
+{"model":"AWS AI Service initialized successfully"}
 
 ## References
 https://swagger.io/specification/
