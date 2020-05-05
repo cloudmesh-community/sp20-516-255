@@ -54,6 +54,15 @@ $ pip install cloudmesh-openapi
 
 ### Pre Requisites : 
 
+* add below parameter to cloudmesh.yaml for forecast service to work
+  * bucket_name : awsforecastassignnment
+  * region_name : us-east-1
+  * forecast_srv : forecast
+  * forecastquery_srv : forecastquery
+  * s3_srv : s3
+  * iam_role_arn: XXXXXX
+  * algorithmArn: arn:aws:forecast:::algorithm/Deep_AR_Plus
+ 
 * Data Format : The data should be in csv file format and must have 
   * item_id : reference column for which time series forecast is required
   * target_value : the column which need to be predicted, data type integer
