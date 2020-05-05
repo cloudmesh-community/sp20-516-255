@@ -52,6 +52,30 @@ $ pip install cloudmesh-openapi
 ```bash
 cms openapi server start .//forecast.yaml
 ```
+* Check for supported AI services
+```bash
+curl http://localhost:8080/cloudmesh/forecast
+```
+e.g. output: 
+{"model":"Supported Time Series Forecast Services AWS : Forecast Azure : Auto ML"} 
+
+* Upload file to the server from location 
+```bash
+curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
+```
+e.g. output: 
+countries-aggregated.csv uploaded successfully
+
+* Validate data file 
+```bash
+curl "http://localhost:8080/cloudmesh/forecast/validate_data" -F "upload=@<file_path>\countries-aggregated.csv"
+```
+e.g. output: 
+countries-aggregated.csv validated successfully
+
+5. Initialize aws parameters 
+
+curl -X GET "http://localhost:8080/cloudmesh/forecast/aws" -H "accept: application/json"
 
 ## References
 https://swagger.io/specification/
