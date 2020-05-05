@@ -10,7 +10,7 @@ servers:
   - url: http://localhost:8080/cloudmesh
 
 paths:
-  /upload:
+  /forecast/upload:
     post:
       summary: upload a file
       operationId: forecast.upload
@@ -30,7 +30,7 @@ paths:
             text/plain:
               schema:
                 type: string
-  /validate_data:
+  /forecast/validate_data:
     post:
       summary: validate the data for mandatory columns, fill missing and less than 0 with 0
       operationId: forecast.validate
@@ -108,11 +108,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: recovered
-          in: query
-          required: true
-          schema:
-            type: boolean
       responses:
         '200':
           description: AI Services info
