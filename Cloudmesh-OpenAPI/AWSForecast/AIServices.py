@@ -34,21 +34,27 @@ class AIServices:
         else :
             print("Supported cloud services at this time : ")
 
-    def createDatasetGroup(self):
 
+    def createDatasetGroup(self):
         from cloudmesh.common.StopWatch import StopWatch
         from StatusIndicator import StatusIndicator
         import time
 
+        def create_uuid(project_name):
+            import random
+            id=random.randrange(100000)
+            return project_name + '_' + str(id)
+
         self.DATASET_FREQUENCY = "D"
         self.TIMESTAMP_FORMAT = "yyyy-MM-dd hh:mm:ss"
-        self.project = 'timeseries1'
+        proj = 'timeseries'
+        self.project=create_uuid(proj)
+        print(self.project)
         self.datasetName = self.project + '_ds'
         self.datasetGroupName = self.project + '_dsg'
         self.s3DataPath = "s3://" + self.bucket_name + "/" + self.key
 
         StopWatch.start('to_dsg')
-        print (self.forecast_srv)
         create_dataset_group_response = self.forecast_srv.create_dataset_group(DatasetGroupName=self.datasetGroupName,
                                                                           Domain="CUSTOM", )
         datasetGroupArn = create_dataset_group_response['DatasetGroupArn']
@@ -58,31 +64,11 @@ class AIServices:
         return self.datasetGroupArn
 
     def createDataset(self):
+        import json
 
-        schema = {
-            "Attributes": [
-                {
-                    "AttributeName": "timestamp",
-                    "AttributeType": "timestamp"
-                },
-                {
-                    "AttributeName": "item_id",
-                    "AttributeType": "string"
-                },
-                {
-                    "AttributeName": "Confirmed",
-                    "AttributeType": "string"
-                },
-                {
-                    "AttributeName": "target_value",
-                    "AttributeType": "integer"
-                },
-                {
-                    "AttributeName": "Deaths",
-                    "AttributeType": "string"
-                }
-            ]
-        }
+        with open('schema.json') as json_file:
+            schema = json.load(json_file)
+
         response = self.forecast_srv.create_dataset(
             Domain="CUSTOM",
             DatasetType='TARGET_TIME_SERIES',
@@ -191,10 +177,6 @@ class AIServices:
         return self.forecast_arn
 
     def queryForecast(self,countryname):
-        import boto3
-        self.forecast_arn='arn:aws:forecast:us-east-1:514439120157:forecast/timeseries1_deeparp_algo_forecast'
-        session = boto3.Session(region_name='us-east-1')
-        forecastquery_srv= session.client(service_name='forecastquery')
 
         forecastResponse = forecastquery_srv.query_forecast(
             ForecastArn=self.forecast_arn,
@@ -204,6 +186,7 @@ class AIServices:
         self.countryname=countryname
         return self.forecastResponse
 
+    '''
     def compareResults(self):
 
         import pandas as pd
@@ -219,21 +202,25 @@ class AIServices:
         self.pred_df_p50 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p50'])
         self.pred_df_p90 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p90'])
 
-        print('all good till here')
         # create a results data frame to show compared data set
         results_df = pd.DataFrame(columns=['timestamp', 'target_value', 'source'])
+
+
 
         #insert actua data
         for index, row in actual_df.iterrows():
             clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            print('ABC')
             results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'actual'},
                                            ignore_index=True)
+
 
         #insert predicted data
         for index, row in self.pred_df_p10.iterrows():
             clean_timestamp = dateutil.parser.parse(row['timestamp'])
             results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p10'},
                                            ignore_index=True)
+
         for index, row in self.pred_df_p50.iterrows():
             clean_timestamp = dateutil.parser.parse(row['timestamp'])
             results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p50'},
@@ -243,10 +230,13 @@ class AIServices:
             results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p90'},
                                            ignore_index=True)
 
+
+
         pivot_df = results_df.pivot(columns='source', values='target_value', index="timestamp")
         pivot_df.plot()
 
         return 'success'
+    '''
 
     def deleteForecastStack(self):
         self.forecast_srv.delete_forecast(ForecastArn=self.forecast_arn)
