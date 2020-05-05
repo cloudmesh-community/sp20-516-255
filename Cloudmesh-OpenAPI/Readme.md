@@ -42,7 +42,6 @@ More details can be found in the [Cloudmesh Manual](https://cloudmesh.github.io/
 
 ###  OpenAPI package installation 
 Make sure you use a python venv before installing. Users can install the code with
-
 ```bash
 $ pip install cloudmesh-openapi
 ```
@@ -57,7 +56,6 @@ cms openapi server start .//forecast.yaml
 curl http://localhost:8080/cloudmesh/forecast
 ```
 e.g. output: 
-
 {"model":"Supported Time Series Forecast Services AWS : Forecast Azure : Auto ML"} 
 
 * Upload file to the server from location 
@@ -65,7 +63,6 @@ e.g. output:
 curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
 ```
 e.g. output: 
-
 countries-aggregated.csv uploaded successfully
 
 * Validate data file 
@@ -73,16 +70,42 @@ countries-aggregated.csv uploaded successfully
 curl "http://localhost:8080/cloudmesh/forecast/validate_data" -F "upload=@<file_path>\countries-aggregated.csv"
 ```
 e.g. output: 
-
 countries-aggregated.csv validated successfully
 
-5. Initialize aws parameters 
+* Split the data into test and train. Data should be validated first before splitting 
+```bash
+curl http://localhost:8080/cloudmesh/forecast/split_data?split_pct=20
+```
+output: "Please validate the data first"
+
+```bash
+curl http://localhost:8080/cloudmesh/forecast/split_data?split_pct=20
+```
+output: "Data split successfully"
+
+* Initialize aws parameters 
 ```bash
 curl "http://localhost:8080/cloudmesh/forecast/aws"
 ```
 e.g. output: 
-
 {"model":"AWS AI Service initialized successfully"}
+
+* Create Forecast, this is a multistep process, it cretes datasetgroup, dataset, import job, predictor and forecast
+```bash
+curl http://localhost:8080/cloudmesh/forecast/create_forecast?country=Austrailia
+```
+This api expects cloud services to be already initialized if not it will request to initialize
+output: 
+"Please initialize cloud service"
+
+output: "Forecast generated successfully"
+
+* Lookup a Forecast
+```bash
+curl http://localhost:8080/cloudmesh/forecast/lookupForecast?countryName=Austrailia
+```
+output : 
+shows [ouput](https://github.com/cloudmesh-community/sp20-516-255/blob/master/Cloudmesh-OpenAPI/AWSForecast/sampleOutput)
 
 ## References
 https://swagger.io/specification/
@@ -91,4 +114,4 @@ https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
 
 https://github.com/aws-samples/amazon-forecast-samples
 
-
+https://github.com/aws-samples/amazon-forecast-samples/tree/master/notebooks/common/util
