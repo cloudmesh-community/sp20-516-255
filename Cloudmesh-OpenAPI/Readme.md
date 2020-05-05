@@ -1,10 +1,14 @@
 # Time Series Forecast using Multi Cloud AI Services
 
-Prafull Porwal, [sp209-516-255](https://github.com/cloudmesh-community/sp20-516-255/tree/master/Cloudmesh-OpenAPI/report.md)
+Prafull Porwal, [sp20-516-255](https://github.com/cloudmesh-community/sp20-516-255/blob/master/Cloudmesh-OpenAPI/Readme.md)
+
+* [Contributors](https://github.com/cloudmesh-community/sp20-516-255/graphs/contributors)
+* [Insights](https://github.com/cloudmesh-community/fa19-516-147/pulse)
+* [Project Code](https://github.com/cloudmesh-community/sp20-516-255/tree/master/Cloudmesh-OpenAPI/AWSForecast)
 
 ## Objective
 
-Develop Open API for time series forecasting on multiple clouds.
+Develop Open API for time series forecasting on multiple clouds
 
 ## Introduction
 
@@ -14,23 +18,44 @@ The project aims to provide an open API for timeseries forecasting.
 1. Amazon
 1. Azure 
 
-## Project Intent 
+### AWS AI Service : Forecast Open API Service Features
 
-Develop in depth understanding of the 
+* Upload the data file to ./cloudmesh/upload-file location
+* Upload the json schema file to ./cloudmesh/upload-file location
+* Validate the data for missing and less than 0 values
+* Split the dataset into Train and test by specifying split percentge.
+* Provide list of Multi Cloud supported for Timeseries Forecasting
+* Initialize the cloud service 
+* Create a Dataset Group
+* Create a Target Time Series Dataset
+* Import data into Forecast from AWS Storage S3
+* Create a Predictor
+* Generate Forecast
+* Query the Forecast
 
-1. Open API : The OpenAPI Specification (OAS) defines a standard, language-agnostic interface to RESTful APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection. 
-1. Cloudmesh : Cloudmesh is a multicloud architecture providing capability to user to access multi-cloud environments such as AWS, Azure, Google, and OpenStack Clouds very easily. 
-1. Available Time Series Forecasting services
+### Environment Connfiguration
 
+* Python 3.8.2 Python or newer.
+* Use a venv (see developer install)
+* MongoDB installed as regular program not as service
+* AWS boto3 library
+* Open API package installed
 
-* AWS Forecast : Amazon Forecast is a fully managed service for time-series forecasting. By providing Amazon Forecast
-with historical time-series data, you can predict future points in the series. Time-series forecasting is
-useful in multiple domains, including retail, financial planning, supply chain, and healthcare. You can
-also use Amazon Forecast to forecast operational metrics for inventory management, and workforce and
-resource planning and management.
+Make sure that cloudmesh is properly installed on your machine and you have mongodb setup to work with cloudmesh.
+More details can be found in the [Cloudmesh Manual](https://cloudmesh.github.io/cloudmesh-manual/installation/install.html)
 
-* Azure Auto ML: 
-1. Python : Python is an interpreted, high-level, general-purpose programming language. Python can be used for developing web, desktop, scientific or any other application.
+###  OpenAPI package installation 
+Make sure you use a python venv before installing. Users can install the code with
+
+```bash
+$ pip install cloudmesh-openapi
+```
+
+### Quick Forecast API reference Commands
+* Start the open API server for the forecast service
+```bash
+cms openapi server start .//forecast.yaml
+```
 
 ## References
 https://swagger.io/specification/
