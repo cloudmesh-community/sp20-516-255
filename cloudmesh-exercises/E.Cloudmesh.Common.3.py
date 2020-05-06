@@ -5,8 +5,8 @@ from cloudmesh.common.Flatdict import FlatDict
 data = {
 'name': 'Prafull',
 'address': {
-            'city': 'Portland',
-            'state': 'OR'
+            'city': 'Raleigh',
+            'state': 'NC'
             }
         }
 flat = FlatDict(data, sep=".")
