@@ -47,7 +47,9 @@ Make sure that cloudmesh is properly installed on your machine and you have mong
 More details can be found in the [Cloudmesh Manual](https://cloudmesh.github.io/cloudmesh-manual/installation/install.html)
 
 ###  OpenAPI package installation 
+
 Make sure you use a python venv before installing. Users can install the code with
+
 ```bash
 $ pip install cloudmesh-openapi
 ```
@@ -55,6 +57,7 @@ $ pip install cloudmesh-openapi
 ### Pre Requisites : 
 
 * add below parameter to cloudmesh.yaml for forecast service to work
+  
   * bucket_name : awsforecastassignnment
   * region_name : us-east-1
   * forecast_srv : forecast
@@ -80,6 +83,7 @@ $ pip install cloudmesh-openapi
 cms openapi server start .//forecast.yaml
 ```
 * Check for supported AI services
+
 ```bash
 curl http://localhost:8080/cloudmesh/forecast
 ```
@@ -87,11 +91,12 @@ e.g. output:
 {"model":"Supported Time Series Forecast Services AWS : Forecast Azure : Auto ML"} 
 
 * Upload file to the server from location 
-```bash
-curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
-```
-e.g. output: 
-countries-aggregated.csv uploaded successfully
+
+   ```bash
+   curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
+   ```
+  e.g. output: 
+  countries-aggregated.csv uploaded successfully
 
 * Validate data file 
 ```bash
