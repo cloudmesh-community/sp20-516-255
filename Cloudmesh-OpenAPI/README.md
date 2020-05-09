@@ -35,6 +35,23 @@ Many cloud providers have introduced machine learning capabilities on their infr
 * Data Validation and missing values checks
 
 
+## Algorithm details
+
+The AWS Forecast service supports following pre-defined algortithms 
+
+  * Autoregressive Integrated Moving Average (ARIMA) Algorithm - arn:aws:forecast:::algorithm/ARIMA
+  * DeepAR+ Algorithm - arn:aws:forecast:::algorithm/Deep_AR_Plus
+  * Exponential Smoothing (ETS) - arn:aws:forecast:::algorithm/ETS
+  * Non-Parametric Time Series (NPTS) Algorithm - arn:aws:forecast:::algorithm/NPTS
+  * Prophet Algorithm - arn:aws:forecast:::algorithm/Prophet
+  * Supports hyperparameter optimization (HPO)
+  
+  [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf)
+  
+  Current Default Values: 
+  
+  * 
+
 ### Environment Configuration
 
 * Python 3.8.2 Python or newer.
@@ -145,19 +162,6 @@ This API should be executed at the end of the session to delete all the resource
 curl "http://localhost:8080/cloudmesh/forecast/deletestack"
 ```
 
-## Algorithm details
-
-The AWS Forecast service supports following pre-defined algortithms 
-
-  * Autoregressive Integrated Moving Average (ARIMA) Algorithm - arn:aws:forecast:::algorithm/ARIMA
-  * DeepAR+ Algorithm - arn:aws:forecast:::algorithm/Deep_AR_Plus
-  * Exponential Smoothing (ETS) - arn:aws:forecast:::algorithm/ETS
-  * Non-Parametric Time Series (NPTS) Algorithm - arn:aws:forecast:::algorithm/NPTS
-  * Prophet Algorithm - arn:aws:forecast:::algorithm/Prophet
-  * Supports hyperparameter optimization (HPO)
-  
-   [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf)
-   
 ## Limitations
   
   * Requires data file with mandatory colums item_id, target_value and timestamp
