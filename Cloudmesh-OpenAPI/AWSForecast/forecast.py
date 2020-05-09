@@ -73,6 +73,7 @@ def updatedf(x,setval):
 def updateNan(x):
      return x.fillna(0)
 
+
 def validate() -> str:
     """
     update the negative values to requested value
@@ -85,14 +86,19 @@ def validate() -> str:
     filename = file.filename
     if file:
         import datetime
+        import os
         path = f"~/.cloudmesh/upload-file"
         file_path = os.path.join(path, filename)
-        df = pd.read_csv(file_path)
-        numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+        df = pd.read_csv(file_path,)
+
+        numerics = ['int16', 'int32', 'int64']
         for c in [c for c in df.columns if df[c].dtype in numerics]:
-            df[c] = df[c].apply(lambda x: updatedf(x, 0))
+                 df[c] = df[c].applymap(np.int64)
 
         df = df.apply(lambda x: updateNan(x))
+
+        df['target_value'] = df['target_value'].astype(int)
+
         AIServObj.df = df
         returnStr = filename + ' validated successfully'
     return returnStr
@@ -120,7 +126,6 @@ def split_data_train_test(split_pct=0.3):
     split_pct=float(split_pct/100)
 
     if hasattr(AIServObj, 'df'):
-        print(AIServObj.df['timestamp'])
         train_df, test_df= split_train_test(AIServObj.df,split_pct)
         StopWatch.start('to_csv')
         train_df.to_csv("aiservices-train.csv", header=False, index=False)
@@ -208,13 +213,3 @@ def queryGeneratedForecast(countryName):
 
     AIServObj.forecastResponse=forecastResponse
     return forecastResponse
-
-
-def deleteForecastStack():
-    '''
-    delete the stack used after use as cleanup
-    :return:
-    '''
-    delstack=AIServObj.ddeleteForecastStack()
-    if delstack==1 :
-        return "Cloud Stack Deleted Successfully"

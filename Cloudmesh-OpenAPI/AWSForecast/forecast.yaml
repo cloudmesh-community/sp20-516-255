@@ -134,18 +134,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/lookupForecast"
 
-  /forecast/deletestack:
-    get:
-      summary: Returns supported Time Series Forecasting functions of the hosting server
-      operationId: forecast.deleteForecastStack
-      responses:
-        '200':
-          description: AI Services info
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/forecast"
-
 components:
   schemas:
     forecast:

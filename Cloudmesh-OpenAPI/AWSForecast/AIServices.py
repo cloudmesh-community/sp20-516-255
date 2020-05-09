@@ -64,7 +64,7 @@ class AIServices:
         self.TIMESTAMP_FORMAT = "yyyy-MM-dd hh:mm:ss"
         proj = 'timeseries'
         self.project=create_uuid(proj)
-        print(self.project)
+
         self.datasetName = self.project + '_ds'
         self.datasetGroupName = self.project + '_dsg'
         self.s3DataPath = "s3://" + self.bucket_name + "/" + self.key
@@ -80,9 +80,16 @@ class AIServices:
 
     def createDataset(self):
         import json
+        import os
+        home1 = os.path.expanduser('~')
+        file_path = os.path.join(home1, '.cloudmesh', 'upload-file','schema.json')
+        print(file_path)
 
-        with open('schema.json') as json_file:
+        with open(file_path) as json_file:
             schema = json.load(json_file)
+
+        print(self.datasetName)
+        print(schema)
 
         response = self.forecast_srv.create_dataset(
             Domain="CUSTOM",
@@ -183,19 +190,10 @@ class AIServices:
 
     def queryForecast(self,countryname):
 
-        forecastResponse = forecastquery_srv.query_forecast(
+        forecastResponse = self.forecastquery.query_forecast(
             ForecastArn=self.forecast_arn,
             Filters={"item_id": countryname}
         )
         self.forecastResponse=forecastResponse
         self.countryname=countryname
         return self.forecastResponse
-
-    def deleteForecastStack(self):
-        self.forecast_srv.delete_forecast(ForecastArn=self.forecast_arn)
-        self.forecast_srv.delete_predictor(PredictorArn=self.predictor_arn)
-        self.forecast_srv.delete_dataset_import_job(DatasetImportJobArn=self.ds_import_job_arn)
-        self.forecast_srv.delete_dataset(DatasetArn=self.datasetArn)
-        self.forecast_srv.delete_dataset_group(DatasetGroupArn=self.datasetGroupArn)
-        boto3.Session().resource('s3').Bucket(self.bucket_name).Object(self.key).delete()
-        return 1
