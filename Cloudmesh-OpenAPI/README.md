@@ -48,6 +48,8 @@ The AWS Forecast service supports following pre-defined algortithms
   
   [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf)
   
+  Current Default Values: 
+  
 
 ### Environment Configuration
 
@@ -129,6 +131,7 @@ $ pip install cloudmesh-openapi
   output: "Data split successfully"
 
 * Initialize aws parameters 
+
   ```bash
   curl "http://localhost:8080/cloudmesh/forecast/aws"
   ```
@@ -136,6 +139,7 @@ $ pip install cloudmesh-openapi
   {"model":"AWS AI Service initialized successfully"}
 
 * Create Forecast, this is a multistep process, it cretes datasetgroup, dataset, import job, predictor and forecast
+  
   ```bash
   curl http://localhost:8080/cloudmesh/forecast/create_forecast?country=Austrailia
   ```
@@ -150,11 +154,13 @@ output: "Forecast generated successfully"
 ```bash
 curl http://localhost:8080/cloudmesh/forecast/lookupForecast?countryName=Austrailia
 ```
+
 output : 
 shows [ouput](https://github.com/cloudmesh-community/sp20-516-255/blob/master/Cloudmesh-OpenAPI/AWSForecast/sampleOutput)
 
 * Delete Data Stack for the current project
 This API should be executed at the end of the session to delete all the resources created for the analysis
+
 ```bash
 curl "http://localhost:8080/cloudmesh/forecast/deletestack"
 ```
@@ -176,6 +182,6 @@ curl "http://localhost:8080/cloudmesh/forecast/deletestack"
     * BackTestWindowOffset: 24  
 
 ## References
-https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
+AWS Forecast Documentation <https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf>
 
-https://github.com/aws-samples/amazon-forecast-samples
+AWS Forecast Samples <https://github.com/aws-samples/amazon-forecast-samples>
