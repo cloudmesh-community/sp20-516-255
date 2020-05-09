@@ -1,20 +1,9 @@
 class AIServices:
 
     def __init__(self,cloudname='None'):
-        '''
-        Initialize function for the AI Service class
-        currently support AWS Forecast Service
-        :param cloudname:
-        '''
         print("Time Series Service initialized")
 
     def init_cloud_params(self,cloudname):
-        '''
-        Initialize cloud parameter for the service requested
-        support AWS forecast service
-        :param cloudname:
-        :return:
-        '''
 
         from cloudmesh.configuration.Config import Config
         self.conf = Config()["cloudmesh"]
@@ -47,12 +36,8 @@ class AIServices:
 
 
     def createDatasetGroup(self):
-        '''
-        Create Dataset Group required for AWS Forecasting Service
-        :return:
-        '''
         from cloudmesh.common.StopWatch import StopWatch
-
+        from StatusIndicator import StatusIndicator
         import time
 
         def create_uuid(project_name):
@@ -98,7 +83,7 @@ class AIServices:
         return self.datasetArn
 
     def createDatsetImport(self):
-
+        from StatusIndicator import StatusIndicator
         import time
 
         datasetImportJobName = self.project + '_IMPORT_JOB'
@@ -113,11 +98,14 @@ class AIServices:
                                                                     TimestampFormat=self.TIMESTAMP_FORMAT
                                                                     )
         ds_import_job_arn = ds_import_job_response['DatasetImportJobArn']
-
+        status_indicator = StatusIndicator()
         while True:
             status = self.forecast_srv.describe_dataset_import_job(DatasetImportJobArn=ds_import_job_arn)['Status']
+            print('Checking')
+            status_indicator.update(status)
             if status in ('ACTIVE', 'CREATE_FAILED'): break
             time.sleep(10)
+        status_indicator.end()
 
         self.ds_import_job_arn=ds_import_job_arn
         return self.ds_import_job_arn
@@ -154,12 +142,17 @@ class AIServices:
                                                                                    }
                                                               )
         predictor_arn = create_predictor_response['PredictorArn']
+        from StatusIndicator import StatusIndicator
         import time
+        status_indicator = StatusIndicator()
 
         while True:
             status = self.forecast_srv.describe_predictor(PredictorArn=predictor_arn)['Status']
+            status_indicator.update(status)
             if status in ('ACTIVE', 'CREATE_FAILED'): break
             time.sleep(10)
+
+        status_indicator.end()
 
         self.predictor_arn=predictor_arn
         return self.predictor_arn
@@ -171,13 +164,19 @@ class AIServices:
                                                             PredictorArn=self.predictor_arn)
         forecast_arn = create_forecast_response['ForecastArn']
 
+        from StatusIndicator import StatusIndicator
+
         import time
+
+        status_indicator = StatusIndicator()
 
         while True:
             status = self.forecast_srv.describe_forecast(ForecastArn=forecast_arn)['Status']
+            status_indicator.update(status)
             if status in ('ACTIVE', 'CREATE_FAILED'): break
             time.sleep(10)
 
+        status_indicator.end()
         self.forecast_arn=forecast_arn
         return self.forecast_arn
 
@@ -191,6 +190,58 @@ class AIServices:
         self.countryname=countryname
         return self.forecastResponse
 
+    '''
+    def compareResults(self):
+
+        import pandas as pd
+        import dateutil.parser
+
+        #get actual test data
+        actual_df = pd.read_csv("aiservices-test.csv", names=['timestamp', 'item_id', 'Confirmed', 'target_value','Deaths'])
+        actual_df = actual_df[(actual_df['timestamp'] >= '2020-05-01') & (actual_df['timestamp'] < '2020-05-31')]
+        actual_df = actual_df[(actual_df['item_id'] == self.countryname)]
+
+        #get predicted data
+        self.pred_df_p10 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p10'])
+        self.pred_df_p50 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p50'])
+        self.pred_df_p90 = pd.DataFrame.from_dict(self.forecastResponse['Forecast']['Predictions']['p90'])
+
+        # create a results data frame to show compared data set
+        results_df = pd.DataFrame(columns=['timestamp', 'target_value', 'source'])
+
+
+
+        #insert actua data
+        for index, row in actual_df.iterrows():
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            print('ABC')
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'actual'},
+                                           ignore_index=True)
+
+
+        #insert predicted data
+        for index, row in self.pred_df_p10.iterrows():
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p10'},
+                                           ignore_index=True)
+
+        for index, row in self.pred_df_p50.iterrows():
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p50'},
+                                           ignore_index=True)
+        for index, row in self.pred_df_p90.iterrows():
+            clean_timestamp = dateutil.parser.parse(row['timestamp'])
+            results_df = results_df.append({'timestamp': clean_timestamp, 'target_value': row['target_value'], 'source': 'p90'},
+                                           ignore_index=True)
+
+
+
+        pivot_df = results_df.pivot(columns='source', values='target_value', index="timestamp")
+        pivot_df.plot()
+
+        return 'success'
+    '''
+
     def deleteForecastStack(self):
         self.forecast_srv.delete_forecast(ForecastArn=self.forecast_arn)
         self.forecast_srv.delete_predictor(PredictorArn=self.predictor_arn)
@@ -198,4 +249,5 @@ class AIServices:
         self.forecast_srv.delete_dataset(DatasetArn=self.datasetArn)
         self.forecast_srv.delete_dataset_group(DatasetGroupArn=self.datasetGroupArn)
         boto3.Session().resource('s3').Bucket(self.bucket_name).Object(self.key).delete()
-        return 1
+
+        return "Data Stack deleted"

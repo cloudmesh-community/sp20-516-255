@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#!/usr/bin/python
 import boto3
 from time import sleep
 import subprocess

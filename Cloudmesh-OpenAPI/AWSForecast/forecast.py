@@ -24,8 +24,7 @@ def get_supported_times_series_services():
     :return:
            list of Time Series Forecasting Services Supported
     """
-    req_info = "Supported Time Series Forecast Services AWS : Forecast "  \
-               "Azure : Auto ML"
+    req_info = "Supported Time Series Forecast Services AWS : Forecast "
     pinfo = {"model": req_info}
     return jsonify(pinfo)
 
@@ -197,7 +196,11 @@ def generate_forecast(country='United Kingdom'):
     return "Forecast generated successfully"
 
 def queryGeneratedForecast(countryName):
-
+    '''
+    Query the generated Forecast
+    :param countryName:
+    :return: Response from the generated query
+    '''
     if hasattr(AIServObj, 'forecast_arn'):
         forecastResponse=AIServObj.queryForecast(countryName)
     else:
@@ -207,12 +210,11 @@ def queryGeneratedForecast(countryName):
     return forecastResponse
 
 
-def compareResults():
-    if hasattr(AIServObj, 'forecastResponse'):
-        results=AIServObj.compareResults()
-    else:
-        return "No Results to Compare, generate a forecast query first"
-    return "Comparasion Chart displayed"
-
-
-
+def deleteForecastStack():
+    '''
+    delete the stack used after use as cleanup
+    :return:
+    '''
+    delstack=AIServObj.ddeleteForecastStack()
+    if delstack==1 :
+        return "Cloud Stack Deleted Successfully"
