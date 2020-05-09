@@ -48,9 +48,6 @@ The AWS Forecast service supports following pre-defined algortithms
   
   [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf)
   
-  Current Default Values: 
-  
-  * 
 
 ### Environment Configuration
 
@@ -166,7 +163,17 @@ curl "http://localhost:8080/cloudmesh/forecast/deletestack"
   
   * Requires data file with mandatory colums item_id, target_value and timestamp
   * Requires a schema file schema.json to be provided by the user
-  
+  * Current Default Values: below values are defaulted in the current implementation
+    * DATASET_FREQUENCY = "D" set to daily 
+    * TIMESTAMP_FORMAT= "yyyy-MM-dd hh:mm:s"
+    * Resource Names created in the service will be prefixed with 'timeseries'
+    * Domain="CUSTOM"
+    * DatasetType='TARGET_TIME_SERIES'
+    * forecastHorizon = 24
+    * PerformAutoML=False
+    * PerformHPO=False
+    * NumberOfBacktestWindows: 1
+    * BackTestWindowOffset: 24  
 
 ## References
 https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
