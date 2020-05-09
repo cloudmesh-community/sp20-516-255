@@ -79,57 +79,57 @@ $ pip install cloudmesh-openapi
 
 ### Quick Forecast API reference Commands
 * Start the open API server for the forecast service
-```bash
-cms openapi server start .//forecast.yaml
-```
+  ```bash
+  cms openapi server start .//forecast.yaml
+  ```
 * Check for supported AI services
+  ```bash
+  curl http://localhost:8080/cloudmesh/forecast
+  ```
+  e.g. output: 
+  "model": "Supported Time Series Forecast Services AWS : Forecast " 
 
-```bash
-curl http://localhost:8080/cloudmesh/forecast
-```
-e.g. output: 
-{"model":"Supported Time Series Forecast Services AWS : Forecast Azure : Auto ML"} 
-
-* Upload file to the server from location 
-
-   ```bash
-   curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
-   ```
+* Upload file to the server from location (
+  File path should be the location on server where file is located.  
+  ```bash
+  curl "http://localhost:8080/cloudmesh/forecast/upload" -F "upload=@<file_path>\countries-aggregated.csv"
+  ```
   e.g. output: 
   countries-aggregated.csv uploaded successfully
 
 * Validate data file 
-```bash
-curl "http://localhost:8080/cloudmesh/forecast/validate_data" -F "upload=@<file_path>\countries-aggregated.csv"
-```
-e.g. output: 
-countries-aggregated.csv validated successfully
+  ```bash
+  curl "http://localhost:8080/cloudmesh/forecast/validate_data" -F "upload=@<file_path>\countries-aggregated.csv"
+  ```
+  e.g. output: 
+  countries-aggregated.csv validated successfully
 
 * Split the data into test and train. Data should be validated first before splitting 
-```bash
-curl http://localhost:8080/cloudmesh/forecast/split_data?split_pct=20
-```
-output: "Please validate the data first"
+  ```bash
+  curl http://localhost:8080/cloudmesh/forecast/split_data?split_pct=20
+  ```
+  output: "Please validate the data first"
 
-```bash
-curl http://localhost:8080/cloudmesh/forecast/split_data?split_pct=20
-```
-output: "Data split successfully"
+  ```bash
+  curl http://localhost:8080/cloudmesh/forecast/split_data?split_pct=20
+  ```
+  output: "Data split successfully"
 
 * Initialize aws parameters 
-```bash
-curl "http://localhost:8080/cloudmesh/forecast/aws"
-```
-e.g. output: 
-{"model":"AWS AI Service initialized successfully"}
+  ```bash
+  curl "http://localhost:8080/cloudmesh/forecast/aws"
+  ```
+  e.g. output: 
+  {"model":"AWS AI Service initialized successfully"}
 
 * Create Forecast, this is a multistep process, it cretes datasetgroup, dataset, import job, predictor and forecast
-```bash
-curl http://localhost:8080/cloudmesh/forecast/create_forecast?country=Austrailia
-```
-This api expects cloud services to be already initialized if not it will request to initialize
-output: 
-"Please initialize cloud service"
+  ```bash
+  curl http://localhost:8080/cloudmesh/forecast/create_forecast?country=Austrailia
+  ```
+  This api expects cloud services to be already initialized if not it will request to initialize
+  output: 
+  
+  "Please initialize cloud service"
 
 output: "Forecast generated successfully"
 
@@ -140,11 +140,13 @@ curl http://localhost:8080/cloudmesh/forecast/lookupForecast?countryName=Austrai
 output : 
 shows [ouput](https://github.com/cloudmesh-community/sp20-516-255/blob/master/Cloudmesh-OpenAPI/AWSForecast/sampleOutput)
 
-## References
-https://swagger.io/specification/
+* Delete Data Stack for the current project
+This API should be executed at the end of the session to delete all the resources created for the analysis
+```bash
+curl http://localhost:8080/cloudmesh/forecast/lookupForecast?countryName=Austrailia
+```
 
+## References
 https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
 
 https://github.com/aws-samples/amazon-forecast-samples
-
-https://github.com/aws-samples/amazon-forecast-samples/tree/master/notebooks/common/util
