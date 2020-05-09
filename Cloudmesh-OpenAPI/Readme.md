@@ -49,7 +49,6 @@ More details can be found in the [Cloudmesh Manual](https://cloudmesh.github.io/
 ###  OpenAPI package installation 
 
 Make sure you use a python venv before installing. Users can install the code with
-
 ```bash
 $ pip install cloudmesh-openapi
 ```
@@ -58,26 +57,26 @@ $ pip install cloudmesh-openapi
 
 * add below parameter to cloudmesh.yaml for forecast service to work
   
-  * bucket_name : awsforecastassignnment
-  * region_name : us-east-1
-  * forecast_srv : forecast
-  * forecastquery_srv : forecastquery
-  * s3_srv : s3
-  * iam_role_arn: XXXXXX
-  * algorithmArn: arn:aws:forecast:::algorithm/Deep_AR_Plus
- 
+    * bucket_name : awsforecastassignnment
+    * region_name : us-east-1
+    * forecast_srv : forecast
+    * forecastquery_srv : forecastquery
+    * s3_srv : s3
+    * iam_role_arn: XXXXXX
+    * algorithmArn: arn:aws:forecast:::algorithm/Deep_AR_Plus
+
 * Data Format : The data should be in csv file format and must have 
-  * item_id : reference column for which time series forecast is required
-  * target_value : the column which need to be predicted, data type integer
-  * timestamp : timestamp of data samples
+    
+    * item_id : reference column for which time series forecast is required
+    * target_value : the column which need to be predicted, data type integer
+    * timestamp : timestamp of data samples
   
   [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/API_CreateDataset.html)
   
 * Json Schema : Json Schema file with name schema.json 
 
-  
-
 ### Quick Forecast API reference Commands
+
 * Start the open API server for the forecast service
   ```bash
   cms openapi server start .//forecast.yaml
@@ -143,8 +142,27 @@ shows [ouput](https://github.com/cloudmesh-community/sp20-516-255/blob/master/Cl
 * Delete Data Stack for the current project
 This API should be executed at the end of the session to delete all the resources created for the analysis
 ```bash
-curl http://localhost:8080/cloudmesh/forecast/lookupForecast?countryName=Austrailia
+curl "http://localhost:8080/cloudmesh/forecast/deletestack"
 ```
+
+## Algorithm details
+
+The AWS Forecast service supports following pre-defined algortithms 
+
+  * Autoregressive Integrated Moving Average (ARIMA) Algorithm - arn:aws:forecast:::algorithm/ARIMA
+  * DeepAR+ Algorithm - arn:aws:forecast:::algorithm/Deep_AR_Plus
+  * Exponential Smoothing (ETS) - arn:aws:forecast:::algorithm/ETS
+  * Non-Parametric Time Series (NPTS) Algorithm - arn:aws:forecast:::algorithm/NPTS
+  * Prophet Algorithm - arn:aws:forecast:::algorithm/Prophet
+  * Supports hyperparameter optimization (HPO)
+  
+   [AWS Time Series Forecast](https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf)
+   
+## Limitations
+  
+  * Requires data file with mandatory colums item_id, target_value and timestamp
+  * Requires a schema file schema.json to be provided by the user
+  
 
 ## References
 https://docs.aws.amazon.com/forecast/latest/dg/forecast.dg.pdf
