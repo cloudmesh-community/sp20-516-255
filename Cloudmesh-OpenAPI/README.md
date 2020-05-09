@@ -154,16 +154,10 @@ output: "Forecast generated successfully"
 ```bash
 curl http://localhost:8080/cloudmesh/forecast/lookupForecast?countryName=Austrailia
 ```
-
 output : 
 shows [ouput](https://github.com/cloudmesh-community/sp20-516-255/blob/master/Cloudmesh-OpenAPI/AWSForecast/sampleOutput)
 
-* Delete Data Stack for the current project
-This API should be executed at the end of the session to delete all the resources created for the analysis
 
-```bash
-curl "http://localhost:8080/cloudmesh/forecast/deletestack"
-```
 
 ## Limitations
   
